@@ -5,6 +5,12 @@ Concept: an official sick note from Leonida General Hospital, issued on GTA VI
 launch day (19 Nov 2026). The make.fun ghost is the attending physician, worked
 into the document as the doctor -- not a sticker. 1200x1200, text sized to stay
 readable when the judge shrinks it to 480x480.
+
+v2 (this session): fixed the download size to Rockstar's official 212 GB
+(the v1 draft said 328 GB, which no source supports), added a fifth field
+(RETURN DATE — "WHEN LUCIA SAYS SO", a Jason & Lucia beat) for joke density,
+and made the doctor block say the treatment is paid by the agent, so the
+make.fun pitch lives in the picture itself, not only in the footer.
 """
 from PIL import Image, ImageDraw, ImageFont
 
@@ -78,37 +84,38 @@ def main():
            fill=(255, 220, 240), anchor="mm")
 
     y = 262
-    d.text((W // 2, y), "OFFICIAL SICK NOTE", font=font(BOLD, 64), fill=INK, anchor="ma")
-    y += 82
+    d.text((W // 2, y), "OFFICIAL SICK NOTE", font=font(BOLD, 58), fill=INK, anchor="ma")
+    y += 74
     d.line([(180, y), (W - 180, y)], fill=DARK, width=4)
-    y += 34
+    y += 28
 
     fields = [
         ("PATIENT", "EVERY GAMER IN LEONIDA"),
         ("DIAGNOSIS", "ACUTE GTA VI LAUNCH FEVER (13 YEARS IN THE MAKING)"),
-        ("SYMPTOMS", "CALLED IN SICK  •  328 GB DOWNLOAD"),
+        ("SYMPTOMS", "CALLED IN SICK  •  212 GB DOWNLOAD"),
         ("PRESCRIPTION", "STAY HOME. PLAY GTA VI. REPEAT UNTIL VICE CITY IS 100%."),
+        ("RETURN DATE", "WHEN LUCIA SAYS SO."),
     ]
     x0, x1 = 130, W - 130
     for label, value in fields:
-        d.text((x0, y), label, font=font(BOLD, 27), fill=GREY, anchor="la")
-        y += 34
-        for line in wrap(d, value, font(BOLD, 38), x1 - x0):
-            d.text((x0, y), line, font=font(BOLD, 38), fill=INK, anchor="la")
-            y += 48
-        y += 12
+        d.text((x0, y), label, font=font(BOLD, 26), fill=GREY, anchor="la")
+        y += 28
+        for line in wrap(d, value, font(BOLD, 36), x1 - x0):
+            d.text((x0, y), line, font=font(BOLD, 36), fill=INK, anchor="la")
+            y += 44
+        y += 10
 
     # --- doctor block: the make.fun ghost as attending physician ---------
-    ghost = Image.open("makefun-mark.png").convert("RGBA").resize((170, 170))
+    ghost = Image.open("makefun-mark.png").convert("RGBA").resize((150, 150))
     gy = y + 4
     bg.paste(ghost, (x0, gy), ghost)
     d = ImageDraw.Draw(bg)
-    tx = x0 + 200
-    d.text((tx, gy + 12), "ATTENDING PHYSICIAN:", font=font(BOLD, 26), fill=GREY, anchor="la")
-    d.text((tx, gy + 48), "Dr. Ghost", font=font(ITAL, 46), fill=INK, anchor="la")
-    d.text((tx, gy + 106), "make.fun  •  Chief of Getting", font=font(BOLD, 28),
+    tx = x0 + 180
+    d.text((tx, gy + 10), "ATTENDING PHYSICIAN:", font=font(BOLD, 26), fill=GREY, anchor="la")
+    d.text((tx, gy + 44), "Dr. Ghost", font=font(ITAL, 42), fill=INK, anchor="la")
+    d.text((tx, gy + 96), "make.fun  •  Chief of Getting", font=font(BOLD, 28),
            fill=INK, anchor="la")
-    d.text((tx, gy + 140), "Paid to Play", font=font(BOLD, 28), fill=INK, anchor="la")
+    d.text((tx, gy + 130), "Paid to Play — by my AI agent", font=font(BOLD, 28), fill=INK, anchor="la")
 
     # rotated APPROVED stamp, top-right of the doctor block
     stamp = Image.new("RGBA", (330, 120), (0, 0, 0, 0))
